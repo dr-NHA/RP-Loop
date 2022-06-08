@@ -10,6 +10,7 @@ The different problems I encountered during the test phase are :
 ## Download
 Rockstar Games edition :
 [RP Loop 1.60 v2](https://github.com/tiptoppp/RP-Loop/releases/tag/1.60v2)
+
 Steam edition :
 [RP Loop 1.60](https://github.com/tiptoppp/RP-Loop/releases/tag/1.60Steam)
 ## Preview
