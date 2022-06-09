@@ -20,7 +20,7 @@ namespace RP_Loop_NHA
         /// <param name="executable">Include executable addresses in scan</param>
         /// <param name="file">ini file (OPTIONAL)</param>
         /// <returns>IEnumerable of all addresses found.</returns>
-        public Task<IEnumerable<long>> AoBScan(string search, bool writable = false, bool executable = true, string file = "")
+        public Task<List<long>> AoBScan(string search, bool writable = false, bool executable = true, string file = "")
         {
             return AoBScan(0, long.MaxValue, search, writable, executable, file);
         }
@@ -34,7 +34,7 @@ namespace RP_Loop_NHA
         /// <param name="executable">Include executable addresses in scan</param>
         /// <param name="file">ini file (OPTIONAL)</param>
         /// <returns>IEnumerable of all addresses found.</returns>
-        public Task<IEnumerable<long>> AoBScan(string search, bool readable, bool writable, bool executable, string file = "")
+        public Task<List<long>> AoBScan(string search, bool readable, bool writable, bool executable, string file = "")
         {
             return AoBScan(0, long.MaxValue, search, readable, writable, executable, file);
         }
@@ -50,7 +50,7 @@ namespace RP_Loop_NHA
         /// <param name="writable">Include writable addresses in scan</param>
         /// <param name="executable">Include executable addresses in scan</param>
         /// <returns>IEnumerable of all addresses found.</returns>
-        public Task<IEnumerable<long>> AoBScan(long start, long end, string search, bool writable = false, bool executable = true, string file = "")
+        public Task<List<long>> AoBScan(long start, long end, string search, bool writable = false, bool executable = true, string file = "")
         {
             // Not including read only memory was scan behavior prior.
             return AoBScan(start, end, search, false, writable, executable, file);
@@ -67,7 +67,7 @@ namespace RP_Loop_NHA
         /// <param name="writable">Include writable addresses in scan</param>
         /// <param name="executable">Include executable addresses in scan</param>
         /// <returns>IEnumerable of all addresses found.</returns>
-        public Task<IEnumerable<long>> AoBScan(long start, long end, string search, bool readable, bool writable, bool executable, string file = "")
+        public Task<List<long>> AoBScan(long start, long end, string search, bool readable, bool writable, bool executable, string file = "")
         {
             return Task.Run(() =>
             {
@@ -119,12 +119,9 @@ namespace RP_Loop_NHA
                 if (end > (long)proc_max_address.ToUInt64())
                     end = (long)proc_max_address.ToUInt64();
 
-                Debug.WriteLine("[DEBUG] memory scan starting... (start:0x" + start.ToString(MSize()) + " end:0x" + end.ToString(MSize()) + " time:" + DateTime.Now.ToString("h:mm:ss tt") + ")");
-                UIntPtr currentBaseAddress = new UIntPtr((ulong)start);
+    UIntPtr currentBaseAddress = new UIntPtr((ulong)start);
 
                 MEMORY_BASIC_INFORMATION memInfo = new MEMORY_BASIC_INFORMATION();
-
-            //Debug.WriteLine("[DEBUG] start:0x" + start.ToString("X8") + " curBase:0x" + currentBaseAddress.ToUInt64().ToString("X8") + " end:0x" + end.ToString("X8") + " size:0x" + memInfo.RegionSize.ToString("X8") + " vAloc:" + VirtualQueryEx(mProc.Handle, currentBaseAddress, out memInfo).ToUInt64().ToString());
 
             while (VirtualQueryEx(mProc.Handle, currentBaseAddress, out memInfo).ToUInt64() != 0 &&
                        currentBaseAddress.ToUInt64() < (ulong)end &&
@@ -173,8 +170,6 @@ namespace RP_Loop_NHA
 
                     currentBaseAddress = new UIntPtr(memInfo.BaseAddress.ToUInt64() + (ulong)memInfo.RegionSize);
 
-                //Console.WriteLine("SCAN start:" + memRegion.RegionBase.ToString() + " end:" + currentBaseAddress.ToString());
-
                 if (memRegionList.Count > 0)
                     {
                         var previousRegion = memRegionList[memRegionList.Count - 1];
@@ -206,9 +201,7 @@ namespace RP_Loop_NHA
                                          bagResult.Add(result);
                                  });
 
-                Debug.WriteLine("[DEBUG] memory scan completed. (time:" + DateTime.Now.ToString("h:mm:ss tt") + ")");
-
-                return bagResult.ToList().OrderBy(c => c).AsEnumerable();
+                return bagResult.ToList();
             });
         }
 

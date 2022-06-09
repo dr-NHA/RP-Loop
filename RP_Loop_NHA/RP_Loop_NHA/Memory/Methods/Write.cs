@@ -28,7 +28,6 @@ namespace RP_Loop_NHA
 
             if (FreezeTokenSrcs.ContainsKey(address))
             {
-                Debug.WriteLine("Changing Freezing Address " + address + " Value " + value);
                 try
                 {
                     FreezeTokenSrcs[address].Cancel();
@@ -36,13 +35,11 @@ namespace RP_Loop_NHA
                 }
                 catch
                 {
-                    Debug.WriteLine("ERROR: Avoided a crash. Address " + address + " was not frozen.");
                     return false;
                 }
             }
             else {
-                Debug.WriteLine("Adding Freezing Address " + address + " Value " + value);
-            }
+               }
 
             FreezeTokenSrcs.TryAdd(address, cts);
 
@@ -65,7 +62,6 @@ namespace RP_Loop_NHA
         /// <param name="address">address where frozen value is stored</param>
         public void UnfreezeValue(string address)
         {
-            Debug.WriteLine("Un-Freezing Address " + address);
             try
             {
                 lock (FreezeTokenSrcs)
@@ -76,8 +72,7 @@ namespace RP_Loop_NHA
             }
             catch
             {
-                Debug.WriteLine("ERROR: Address " + address + " was not frozen.");
-            }
+             }
         }
 
         ///<summary>
@@ -133,8 +128,7 @@ namespace RP_Loop_NHA
                         stringBytes = write.Split(',');
                     else
                         stringBytes = write.Split(' ');
-                    //Debug.WriteLine("write:" + write + " stringBytes:" + stringBytes);
-
+               
                     int c = stringBytes.Count();
                     memory = new byte[c];
                     for (int i = 0; i < c; i++)

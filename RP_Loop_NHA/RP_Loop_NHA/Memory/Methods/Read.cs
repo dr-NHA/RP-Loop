@@ -444,12 +444,10 @@ namespace RP_Loop_NHA
                 }
                 catch
                 {
-                    Debug.WriteLine("ERROR: Avoided a crash. Address " + address + " was not bound.");
-                }
+                    }
             }
             else
             {
-                Debug.WriteLine("Adding Bound Address " + address);
             }
 
             ReadTokenSrcs.TryAdd(address, cts);

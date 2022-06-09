@@ -1,0 +1,10 @@
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\bin\Debug\RP_Loop_NHA.exe.config
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\bin\Debug\RP_Loop_NHA.exe
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\bin\Debug\RP_Loop_NHA.pdb
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\obj\Debug\RP_Loop_NHA.csproj.SuggestedBindingRedirects.cache
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\obj\Debug\RP_Loop_NHA.RP_Loop_Form.resources
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\obj\Debug\RP_Loop_NHA.Properties.Resources.resources
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\obj\Debug\RP_Loop_NHA.csproj.GenerateResource.cache
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\obj\Debug\RP_Loop_NHA.csproj.CoreCompileInputs.cache
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\obj\Debug\RP_Loop_NHA.exe
+C:\Users\grant\source\repos\RP_Loop_NHA\RP_Loop_NHA\obj\Debug\RP_Loop_NHA.pdb

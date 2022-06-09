@@ -66,7 +66,6 @@ namespace RP_Loop_NHA
 
             if (pid <= 0){
                 FailReason = "OpenProcess given proc ID 0.";
-                Debug.WriteLine("ERROR: OpenProcess given proc ID 0.");
                 return false;
             }
 
@@ -80,7 +79,6 @@ namespace RP_Loop_NHA
                 mProc.Process = Process.GetProcessById(pid);
 
                 if (mProc.Process != null && !mProc.Process.Responding){
-                    Debug.WriteLine("ERROR: OpenProcess: Process is not responding or null.");
                     FailReason = "Process is not responding or null.";
                     return false;
                 }
@@ -89,8 +87,7 @@ namespace RP_Loop_NHA
 
                 if (mProc.Handle == IntPtr.Zero){
                     var eCode = Marshal.GetLastWin32Error();
-                    Debug.WriteLine("ERROR: OpenProcess has failed opening a handle to the target process (GetLastWin32ErrorCode: " + eCode + ")");
-                    mProc = null;
+                       mProc = null;
                     FailReason = "failed opening a handle to the target process(GetLastWin32ErrorCode: " + eCode + ")";
                     return false;
                 }
@@ -99,12 +96,9 @@ namespace RP_Loop_NHA
 
                 mProc.MainModule = mProc.Process.MainModule;
 
-                Debug.WriteLine("Process #" + mProc.Process + " is now open.");
                 FailReason = "";
                 return true;
-            }
-            catch (Exception ex) {
-                Debug.WriteLine("ERROR: OpenProcess has crashed. " + ex);
+            }catch (Exception ex) {
                 FailReason = "OpenProcess has crashed. " + ex;
                 return false;
             }
@@ -137,77 +131,11 @@ namespace RP_Loop_NHA
         /// </summary>
         /// <param name="pid">Use process name or process ID here.</param>
         /// <returns></returns>
-        public bool OpenProcess(int pid)
-        {
+        public bool OpenProcess(int pid){
             return OpenProcess(pid, out string FailReason);
         }
 
-        /*public bool IsAdmin()
-        {
-            try
-            {
-                using (WindowsIdentity identity = WindowsIdentity.GetCurrent())
-                {
-                    WindowsPrincipal principal = new WindowsPrincipal(identity);
-                    return principal.IsInRole(WindowsBuiltInRole.Administrator);
-                }
-            } 
-            catch
-            {
-                Debug.WriteLine("ERROR: Could not determin if program is running as admin. Is the NuGet package \"System.Security.Principal.Windows\" missing?");
-                return false;
-            }
-        }*/
-
-        /// <summary>
-        /// Builds the process modules dictionary (names with addresses). Use mProc.Process.Modules instead.
-        /// </summary>
-        /*public ConcurrentDictionary<string, IntPtr> GetModules()
-        {
-            if (mProc.Process == null)
-            {
-                Debug.WriteLine("mProc.Process is null so GetModules failed.");
-                return null;
-            }
-
-            if (mProc.Is64Bit && IntPtr.Size != 8)
-            {
-                Debug.WriteLine("WARNING: Game is x64, but your Trainer is x86! You will be missing some modules, change your Trainer's Solution Platform.");
-            }
-            else if (!mProc.Is64Bit && IntPtr.Size == 8)
-            {
-                Debug.WriteLine("WARNING: Game is x86, but your Trainer is x64! You will be missing some modules, change your Trainer's Solution Platform.");
-            }
-
-            if (mProc.Process.Modules == null)
-            {
-                Debug.WriteLine("mProc.Process.Modules is null so GetModules failed.");
-                return null;
-            }
-
-            if (mProc.Modules != null)
-                mProc.Modules.Clear();
-            else
-                mProc.Modules = new ConcurrentDictionary<string, IntPtr>();
-
-            foreach (ProcessModule Module in mProc.Process.Modules)
-            {
-                if (Module.ModuleName == null || Module.BaseAddress == null)
-                    continue;
-
-                if (!string.IsNullOrEmpty(Module.ModuleName) && !mProc.Modules.ContainsKey(Module.ModuleName))
-                    mProc.Modules.TryAdd(Module.ModuleName, Module.BaseAddress);
-            }
-
-            Debug.WriteLine("Found " + mProc.Modules.Count() + " process modules.");
-            return mProc.Modules;
-        }*/
-
-        public void SetFocus()
-        {
-            //int style = GetWindowLong(procs.MainWindowHandle, -16);
-            //if ((style & 0x20000000) == 0x20000000) //minimized
-            //    SendMessage(procs.Handle, 0x0112, (IntPtr)0xF120, IntPtr.Zero);
+   public void SetFocus(){
             SetForegroundWindow(mProc.Process.MainWindowHandle);
         }
 
@@ -247,17 +175,11 @@ namespace RP_Loop_NHA
             StringBuilder returnCode = new StringBuilder(1024);
             uint read_ini_result;
 
-            if (!String.IsNullOrEmpty(iniFile))
-            {
+            if (!String.IsNullOrEmpty(iniFile)){
                 if (File.Exists(iniFile))
-                {
                     read_ini_result = GetPrivateProfileString("codes", name, "", returnCode, (uint)returnCode.Capacity, iniFile);
-                    //Debug.WriteLine("read_ini_result=" + read_ini_result); number of characters returned
-                }
-                else
-                    Debug.WriteLine("ERROR: ini file \"" + iniFile + "\" not found!");
-            }
-            else
+                      
+            }else
                 returnCode.Append(name);
 
             return returnCode.ToString();
@@ -265,16 +187,13 @@ namespace RP_Loop_NHA
 
         private int LoadIntCode(string name, string path)
         {
-            try
-            {
+            try{
                 int intValue = Convert.ToInt32(LoadCode(name, path), 16);
                 if (intValue >= 0)
                     return intValue;
                 else
                     return 0;
-            } catch
-            {
-                Debug.WriteLine("ERROR: LoadIntCode function crashed!");
+            } catch{
                 return 0;
             }
         }
@@ -331,9 +250,7 @@ namespace RP_Loop_NHA
             if (mProc == null)
                 return UIntPtr.Zero;
 
-            if (mProc.Is64Bit)
-            {
-                //Debug.WriteLine("Changing to 64bit code...");
+            if (mProc.Is64Bit){
                 if (size == 8) size = 16; //change to 64bit
                 return Get64BitCode(name, path, size); //jump over to 64bit code grab
             }
@@ -344,14 +261,7 @@ namespace RP_Loop_NHA
                 theCode = name;
 
             if (String.IsNullOrEmpty(theCode))
-            {
-                //Debug.WriteLine("ERROR: LoadCode returned blank. NAME:" + name + " PATH:" + path);
                 return UIntPtr.Zero;
-            }
-            else
-            {
-                //Debug.WriteLine("Found code=" + theCode + " NAME:" + name + " PATH:" + path);
-            }
 
             // remove spaces
             if (theCode.Contains(" "))
@@ -362,9 +272,7 @@ namespace RP_Loop_NHA
                 try
                 {
                     return new UIntPtr(Convert.ToUInt32(theCode, 16));
-                } catch
-                {
-                    Console.WriteLine("Error in GetCode(). Failed to read address " + theCode);
+                } catch{
                     return UIntPtr.Zero;
                 }
             }
@@ -418,8 +326,7 @@ namespace RP_Loop_NHA
                         }
                         catch
                         {
-                            Debug.WriteLine("Module " + moduleName[0] + " was not found in module list!");
-                            //Debug.WriteLine("Modules: " + string.Join(",", mProc.Modules));
+                    
                         }
                     }
                     ReadProcessMemory(mProc.Handle, (UIntPtr)((int)altModule + offsets[0]), memoryAddress, (UIntPtr)size, IntPtr.Zero);
@@ -443,8 +350,7 @@ namespace RP_Loop_NHA
             {
                 int trueCode = Convert.ToInt32(newOffsets, 16);
                 IntPtr altModule = IntPtr.Zero;
-                //Debug.WriteLine("newOffsets=" + newOffsets);
-                if (theCode.ToLower().Contains("base") || theCode.ToLower().Contains("main"))
+               if (theCode.ToLower().Contains("base") || theCode.ToLower().Contains("main"))
                     altModule = mProc.MainModule.BaseAddress;
                 else if (!theCode.ToLower().Contains("base") && !theCode.ToLower().Contains("main") && theCode.Contains("+"))
                 {
@@ -463,9 +369,7 @@ namespace RP_Loop_NHA
                         }
                         catch
                         {
-                            Debug.WriteLine("Module " + moduleName[0] + " was not found in module list!");
-                            //Debug.WriteLine("Modules: " + string.Join(",", mProc.Modules));
-                        }
+                       }
                     }
                 }
                 else
@@ -519,7 +423,6 @@ namespace RP_Loop_NHA
                 }
                 catch
                 {
-                    Console.WriteLine("Error in GetCode(). Failed to read address " + theCode);
                     return UIntPtr.Zero;
                 }
             }
@@ -562,8 +465,6 @@ namespace RP_Loop_NHA
                         }
                         catch
                         {
-                            Debug.WriteLine("Module " + moduleName[0] + " was not found in module list!");
-                            //Debug.WriteLine("Modules: " + string.Join(",", mProc.Modules));
                         }
                     }
                     ReadProcessMemory(mProc.Handle, (UIntPtr)((Int64)altModule + offsets[0]), memoryAddress, (UIntPtr)size, IntPtr.Zero);
@@ -606,9 +507,7 @@ namespace RP_Loop_NHA
                         }
                         catch
                         {
-                            Debug.WriteLine("Module " + moduleName[0] + " was not found in module list!");
-                            //Debug.WriteLine("Modules: " + string.Join(",", mProc.Modules));
-                        }
+                         }
                     }
                 }
                 else
@@ -639,8 +538,7 @@ namespace RP_Loop_NHA
 
             if (mProc.Process == null)
             { // check if process is open first
-                Debug.WriteLine("Inject failed due to mProc.Process being null. Is the process not open?");
-                return false;
+               return false;
             }
 
             foreach (ProcessModule pm in mProc.Process.Modules)
@@ -1002,7 +900,7 @@ namespace RP_Loop_NHA
             }
 
 
-            Debug.Write("[DEBUG] memory dump completed. Saving dump file to " + file + ". (" + DateTime.Now.ToString("h:mm:ss tt") + ")" + Environment.NewLine);
+          //  Debug.Write("[DEBUG] memory dump completed. Saving dump file to " + file + ". (" + DateTime.Now.ToString("h:mm:ss tt") + ")" + Environment.NewLine);
             return true;
         }
 
@@ -1013,14 +911,12 @@ namespace RP_Loop_NHA
         {
             if (mProc.Process == null)
             {
-                Debug.WriteLine("mProc.Process is null so GetThreads failed.");
                 return;
             }
 
             foreach (ProcessThread thd in mProc.Process.Threads)
             {
-                Debug.WriteLine("ID:" + thd.Id + " State:" + thd.ThreadState + " Address:" + thd.StartAddress + " Priority:" + thd.PriorityLevel);
-            }
+             }
         }
 
         /// <summary>
@@ -1062,8 +958,6 @@ namespace RP_Loop_NHA
             {
                 if (thd.Id != ThreadID)
                     continue;
-                else
-                    Debug.WriteLine("Found thread " + ThreadID);
 
                 IntPtr threadHandle = OpenThread(ThreadAccess.SUSPEND_RESUME, false, (uint)ThreadID);
 
@@ -1072,13 +966,11 @@ namespace RP_Loop_NHA
 
                 if (SuspendThread(threadHandle) == -1)
                 {
-                    Debug.WriteLine("Thread failed to suspend");
                     CloseHandle(threadHandle);
                     break;
                 }
                 else
                 {
-                    Debug.WriteLine("Thread suspended!");
                     CloseHandle(threadHandle);
                     return true;
                 }
