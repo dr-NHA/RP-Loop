@@ -5,6 +5,10 @@
 ## Description
 RP Loop is a small tool programmed in C# that allows you to earn RP in a loop. The operation is quite simple, when it is activated, the RP multiplier will be set to a value of 500 and every second, you will have one then zero stars which will earn you RP.
 
+Right Click The Form To Bring Up The Close Dialog, 
+Unlike The Original You Can Drag The Form Around Your Screen,
+Also This One Is Semi Transparent!
+
 ## The number of stars alternates well between one and zero but no RP is gained.
 ### Solution : Switch lobby and start over.
  
