@@ -13,9 +13,11 @@ Also This One Is Semi Transparent!
 ### Solution : Switch lobby and start over.
  
 ## Download
-Rockstar Games Edition:
+Compatible With All GTA V1.6X Versions:
 [RP Loop 1.60](https://github.com/dr-NHA/RP-Loop/blob/main/RP_Loop_NHA/RP_Loop_NHA/bin/Release/RP_Loop_NHA.exe)
 Only Rockstar Games Edition Till I Add My Aobs For My External Project In Here
+
+## Added Aob's To The Code So You Dont Need To Update All The Time And Wont Need Multiple EXE Files Depending On What Game Launcher
 
 ## Preview
 ![image](https://user-images.githubusercontent.com/56168811/172918710-f4d49c94-f966-4f6a-b547-72c346f62623.png)
