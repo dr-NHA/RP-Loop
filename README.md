@@ -9,8 +9,8 @@ Right Click The Form To Bring Up The Close Dialog,
 Unlike The Original You Can Drag The Form Around Your Screen,
 Also This One Is Semi Transparent!
 
-## The number of stars alternates well between one and zero but no RP is gained.
-### Solution : Switch lobby and start over.
+## Its Changing Wanted Level But Gives No XP Solution:
+### Switch To A New Lobby!
  
 ## Download
 Compatible With All GTA V1.6X Versions:
