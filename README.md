@@ -15,7 +15,7 @@ Also This One Is Semi Transparent!
 ## Download
 Compatible With All GTA V1.6X Versions:
 [RP Loop 1.60](https://github.com/dr-NHA/RP-Loop/blob/main/RP_Loop_NHA/RP_Loop_NHA/bin/Release/RP_Loop_NHA.exe)
-Only Rockstar Games Edition Till I Add My Aobs For My External Project In Here
+Should Work For Every Launcher Now!
 
 ## Added Aob's To The Code So You Dont Need To Update All The Time And Wont Need Multiple EXE Files Depending On What Game Launcher
 
