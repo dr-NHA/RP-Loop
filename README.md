@@ -1,6 +1,6 @@
-## Original Owner Tried Acting Big So I Forked It
-# Release Source For Projects Like This Or The SGF Will Do It For You
-## Modified And Made Better As The Original Dev Clearly Spent 5 Minutes On It
+## Modified And Made Better
+
+## Join The [NHA GTA Discord](https://discord.gg/3EQvmNMr2c)!
 
 ## Description
 RP Loop is a small tool programmed in C# that allows you to earn RP in a loop. The operation is quite simple, when it is activated, the RP multiplier will be set to a value of 500 and every second, you will have one then zero stars which will earn you RP.
